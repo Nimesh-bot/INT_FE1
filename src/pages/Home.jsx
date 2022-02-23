@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { bg, disabled, primary, text } from "../assets/Colors"
 import Card from "../components/Card"
+import { user } from "../data"
 import { mobile } from "../responsive"
 
 const Container = styled.div`
@@ -57,6 +58,19 @@ const Box = styled.div`
   background-color: ${primary};
 `
 
+const totalCryptos = user.cryptoCurrencies.length;
+let uniqueOwned = 0;
+
+function uniqueCounter() {
+  for(let i = 0; i < totalCryptos; i++) {
+    if(user.cryptoCurrencies[i].own !== 0) {
+      uniqueOwned+=1;  
+    }
+  }
+}
+
+uniqueCounter();
+
 const Home = () => {
   return (
     <Container>
@@ -65,7 +79,7 @@ const Home = () => {
           <Title Msize="1rem">Welcome</Title>
           <FlexWrapper>
             <Desc color={`${disabled}`}>UNIQUE CRYTPO OWNED</Desc>
-            <Desc color={`${primary}`} weight="500">6</Desc>
+            <Desc color={`${primary}`} weight="500">{uniqueOwned}</Desc>
           </FlexWrapper>
         </Content>
 

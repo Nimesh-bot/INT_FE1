@@ -1,10 +1,13 @@
+import { useState } from "react"
 import styled from "styled-components"
 import { disabled, primary, text } from "../assets/Colors"
 import { user } from "../data"
 import { Title, Desc } from "../pages/Home"
 import { mobile, tablet } from "../responsive"
+import Backdrop from "./Backdrop"
 
 const Container = styled.div`
+    position: relative;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -78,20 +81,37 @@ const Image = styled.img`
 `
 
 const Card = () => {
-  return (
-    <Container>
-        {user.cryptoCurrencies.map((items) => (
-            <Wrapper>
-                <Content>
-                    <Title weight="300">{items.name}</Title>
-                    <Image src={items.avatar} />
-                    <Desc color={`${disabled}`}>Owned: {items.own}</Desc>
-                </Content>
-                <Button>BUY MORE</Button>
-            </Wrapper>
-        ))}
-    </Container>
-  )
+    const [show, setShow] = useState(false)
+
+    const handleClick = (value) => {
+        setShow(!show);
+        console.log(value);
+    }
+
+    return (
+        <>
+            <Container>
+                {user.cryptoCurrencies.map((items) => (
+                    <Wrapper key={items.id}>
+                        <Content>
+                            <Title weight="300">{items.name}</Title>
+                            <Image src={items.avatar} />
+                            <Desc color={`${disabled}`}>Owned: {items.own}</Desc>
+                        </Content>
+                        <Button onClick={handleClick}>BUY MORE</Button>
+                    </Wrapper>
+                ))}
+            </Container>
+            { 
+                (show) ? 
+                (
+                    <Backdrop />    
+                )
+                :
+                null
+            }
+        </>
+    )
 }
 
 export default Card
