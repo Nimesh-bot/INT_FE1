@@ -1,9 +1,14 @@
 import styled from "styled-components"
 import { primary } from "../assets/Colors"
 import { Title } from "../pages/Home"
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import { useState } from "react";
 
 const Container = styled.div`
-    position: absolute;
+    visibility: ${props => props.visible};
+    position: fixed;
+    top: 0%;
+    left: 0%;
     width: 100%;
     height: 100vh;
     display: flex;
@@ -25,7 +30,10 @@ const ModalContainer = styled.div`
 const Wrapper = styled.div`
     display: flex;
     gap: 1rem;
+    margin-top: ${props => props.margin};
     align-items: center;
+    width: ${props => props.width};
+    justify-content: ${props => props.justify};
 `
 const Input = styled.input`
     flex: 3;
@@ -45,17 +53,20 @@ const Button = styled.button`
 `
 
 const Backdrop = (props) => {
-  return (
-    <Container onClick={props.event}>
-        <ModalContainer>
-            <Title>{props.name}</Title>
-            <Wrapper>
-                <Input type="number" placeholder="0"></Input>
-                <Button>BUY</Button>
-            </Wrapper>
-        </ModalContainer>
-    </Container>
-  )
+    return (
+        <Container visible={props.display}>
+            <ModalContainer>
+                <Wrapper width="100%" justify="space-between">
+                    <Title size="1rem" weight="300">{props.name}</Title>
+                    <CancelOutlinedIcon sx={{color: "white"}} onClick={props.close} />
+                </Wrapper>
+                <Wrapper margin="1rem">
+                    <Input type="number" placeholder="0" onChange={props.changeEvent}></Input>
+                    <Button onClick={props.event}>BUY</Button>
+                </Wrapper>
+            </ModalContainer>
+        </Container>
+    )
 }
 
 export default Backdrop

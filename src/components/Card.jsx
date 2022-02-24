@@ -1,24 +1,24 @@
 import { useState } from "react"
 import styled from "styled-components"
 import { disabled, primary, text } from "../assets/Colors"
-import { user } from "../data"
+// import { user } from "../data"
 import { Title, Desc } from "../pages/Home"
 import { mobile, tablet } from "../responsive"
 import Backdrop from "./Backdrop"
 
-const Container = styled.div`
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2.5rem;
-    align-items: center;
-    padding: 1rem 0;
+// const Container = styled.div`
+//     position: relative;
+//     width: 100%;
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 2.5rem;
+//     align-items: center;
+//     padding: 1rem 0;
 
-    ${tablet({
-        gap: "4rem"
-    })}
-`
+//     ${tablet({
+//         gap: "4rem"
+//     })}
+// `
 const Content = styled.div`
     width: 100%;
     border-radius: 10px;
@@ -80,36 +80,35 @@ const Image = styled.img`
     border-radius: 50%;
 `
 
-const Card = () => {
-    const [show, setShow] = useState(false)
+const Card = (props) => {
+    const [show, setShow] = useState("hidden")
 
-    const handleClick = (value) => {
-        setShow(!show);
-        console.log(value);
+    const handleClick = () => {
+        setShow("visible")
+    }
+    const handleClose = () => {
+        setShow("hidden")
     }
 
     return (
         <>
-            <Container>
-                {user.cryptoCurrencies.map((items) => (
-                    <Wrapper key={items.id}>
-                        <Content>
-                            <Title weight="300">{items.name}</Title>
-                            <Image src={items.avatar} />
-                            <Desc color={`${disabled}`}>Owned: {items.own}</Desc>
-                        </Content>
-                        <Button onClick={handleClick}>BUY MORE</Button>
-                    </Wrapper>
-                ))}
-            </Container>
-            { 
-                (show) ? 
-                (
-                    <Backdrop />    
-                )
-                :
-                null
-            }
+            {/* <Container> */}
+                <Wrapper>
+                    <Content>
+                        <Title weight="300">{props.name}</Title>
+                        <Image src={props.avatar} />
+                        <Desc color={`${disabled}`}>Owned: {props.own}</Desc>
+                    </Content>
+                    <Button onClick={handleClick}>BUY MORE</Button>
+                </Wrapper>
+            {/* </Container> */}
+            <Backdrop 
+                name={props.title} 
+                display={show} 
+                close={handleClose}
+                changeEvent={props.changeEvent}
+                event={props.event}
+            />
         </>
     )
 }
