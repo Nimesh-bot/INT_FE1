@@ -9,77 +9,78 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 
 import { change, revert } from "../redux/themeSlice";
 
+// Styled-Components
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: ${props => props.bg};
+`	
+const Wrapper = styled.div`
+  width: 75vw;
+  margin: 1rem 0;
+
+  ${mobile({
+    width: "90vw"
+  })}
+`
+const Content = styled.div`
+  display: flex;
+  flex-direction: ${props => props.direction || "row"};
+  justify-content: space-between;
+  align-items: center;
+  margin: ${props => props.margin || "0"};
+
+  ${mobile({
+    flexDirection: "column",
+  })}
+`
+export const Title = styled.h1`
+  font-size: ${props => props.size || "1.5rem"};
+  font-weight: ${props => props.weight || "500"};
+  color: ${props => props.color};
+  text-transform: ${props => props.text || "uppercase"};
+`
+export const Desc = styled.p`
+  font-size: ${props => props.size || "1rem"};
+  font-weight: ${props => props.weight || "300"};
+  color: ${props => props.color};
+`
+const FlexWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  width: ${props => props.width};
+
+  ${mobile({
+    width: "unset"
+  })}
+`
+const Box = styled.div`
+  width: 0.75rem;
+  height: 1.5rem;
+  margin: 10px 0;
+  background-color: ${props => props.bg};
+`
+const CardContainer = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  align-items: center;
+  padding: 1rem 0;
+
+  ${tablet({
+      gap: "4rem"
+  })}
+`
+
 const Home = () => {
   const theme = useSelector((state) => state.theme);
   const dispatch = useDispatch();
   
-  // Styled-Components
-  const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: ${theme.bg};
-  `	
-  const Wrapper = styled.div`
-    width: 75vw;
-    margin: 1rem 0;
-  
-    ${mobile({
-      width: "90vw"
-    })}
-  `
-  const Content = styled.div`
-    display: flex;
-    flex-direction: ${props => props.direction || "row"};
-    justify-content: space-between;
-    align-items: center;
-    margin: ${props => props.margin || "0"};
-  
-    ${mobile({
-      flexDirection: "column",
-    })}
-  `
-  const Title = styled.h1`
-    font-size: ${props => props.size || "1.5rem"};
-    font-weight: ${props => props.weight || "500"};
-    color: ${theme.text};
-    text-transform: ${props => props.text || "uppercase"};
-  `
-  const Desc = styled.p`
-    font-size: ${props => props.size || "1rem"};
-    font-weight: ${props => props.weight || "300"};
-    color: ${props => props.color || theme.text};
-  `
-  const FlexWrapper = styled.div`
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    width: ${props => props.width};
-  
-    ${mobile({
-      width: "unset"
-    })}
-  `
-  const Box = styled.div`
-    width: 0.75rem;
-    height: 1.5rem;
-    margin: 10px 0;
-    background-color: ${theme.primary};
-  `
-  const CardContainer = styled.div`
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2.5rem;
-    align-items: center;
-    padding: 1rem 0;
-  
-    ${tablet({
-        gap: "4rem"
-    })}
-  `
 
   const [dark, setDark] = useState(true);
   
@@ -98,12 +99,13 @@ const Home = () => {
   
   const handleBuy = (i) => {
     const boughtAmount = parseInt(value);
-    if (boughtAmount < 0) {
+    if (boughtAmount <= 0) {
       alert("Please enter a valid amount")
     } else {
       let newUser = {...userDetail}
       newUser.cryptoCurrencies[i].own += boughtAmount
       setUserDetail(newUser);
+      setValue(0)
     }
   }
 
@@ -120,10 +122,10 @@ const Home = () => {
   uniqueCounter();
   
   return (
-    <Container>
+    <Container bg={theme.bg}>
       <Wrapper>
         <Content>
-          <Title Msize="1rem">Welcome</Title>
+          <Title Msize="1rem" color={theme.text}>Welcome</Title>
           <FlexWrapper>
             <Desc color={`${theme.disabled}`}>UNIQUE CRYTPO OWNED</Desc>
             <Desc color={`${theme.primary}`} weight="500">{uniqueOwned}</Desc>
@@ -142,8 +144,8 @@ const Home = () => {
 
         <Content margin="3rem 0" direction="column">
           <FlexWrapper width="100%">
-            <Box />
-            <Title>Cryptocurrencies</Title>
+            <Box bg={theme.primary}/>
+            <Title color={theme.text}>Cryptocurrencies</Title>
           </FlexWrapper>
 
           <CardContainer>
