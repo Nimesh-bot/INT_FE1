@@ -14,6 +14,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   background-color: ${props => props.bg};
 `	
@@ -28,13 +29,10 @@ const Wrapper = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: ${props => props.direction || "row"};
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin: ${props => props.margin || "0"};
 
-  ${mobile({
-    flexDirection: "column",
-  })}
 `
 export const Title = styled.h1`
   font-size: ${props => props.size || "1.5rem"};
@@ -50,6 +48,7 @@ export const Desc = styled.p`
 const FlexWrapper = styled.div`
   display: flex;
   gap: 1rem;
+  justify-content: center;
   align-items: center;
   width: ${props => props.width};
 
@@ -68,7 +67,8 @@ const CardContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 2.5rem;
+  justify-content: center;
+  gap: 2rem;
   align-items: center;
   padding: 1rem 0;
 
@@ -124,8 +124,7 @@ const Home = () => {
   return (
     <Container bg={theme.bg}>
       <Wrapper>
-        <Content>
-          <Title Msize="1rem" color={theme.text}>Welcome</Title>
+        <Content direction="column">
           <FlexWrapper>
             <Desc color={`${theme.disabled}`}>UNIQUE CRYTPO OWNED</Desc>
             <Desc color={`${theme.primary}`} weight="500">{uniqueOwned}</Desc>
