@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components"
 import Card from "../components/Card"
 import { user } from "../data"
 import { mobile, tablet } from "../responsive"
+import { change, revert } from "../redux/themeSlice";
+
+// MUI
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
-import { change, revert } from "../redux/themeSlice";
 
 // Styled-Components
 const Container = styled.div`
@@ -76,11 +80,16 @@ const CardContainer = styled.div`
       gap: "4rem"
   })}
 `
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Home = () => {
   const theme = useSelector((state) => state.theme);
   const dispatch = useDispatch();
   
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
 
   const [dark, setDark] = useState(true);
   
@@ -92,10 +101,10 @@ const Home = () => {
     }
     else {
         dispatch(revert())
+      }
     }
-}
-  const [userDetail, setUserDetail] = useState(user)
-  const [value, setValue] = useState(0)
+    const [userDetail, setUserDetail] = useState(user)
+    const [value, setValue] = useState(0)
   
   const handleBuy = (i) => {
     const boughtAmount = parseInt(value);
@@ -105,10 +114,18 @@ const Home = () => {
       let newUser = {...userDetail}
       newUser.cryptoCurrencies[i].own += boughtAmount
       setUserDetail(newUser);
+      setMessage("You bought " + boughtAmount + " " + newUser.cryptoCurrencies[i].name)
+      setOpen(true);
       setValue(0)
     }
   }
-
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+  
   const totalCryptos = userDetail.cryptoCurrencies.length;
   let uniqueOwned = 0;
   
@@ -230,6 +247,11 @@ const Home = () => {
               />
           </CardContainer>
         </Content>
+        <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
       </Wrapper>
     </Container>
   )
